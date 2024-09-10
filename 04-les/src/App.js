@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import AddItem from "./AddItem";
 import Header from "./Header";
@@ -12,28 +12,27 @@ function App() {
   const [newItems, setNewItems] = useState("")
   const [searchItem, setSearchItem] = useState("")
 
+
+  useEffect(() => {
+    localStorage.setItem("todolist", JSON.stringify(items))
+  }, [items])
+  
+
   const handleCheck = (id) => {
     const listItems = items.map(item => item.id === id ? {...item, checked: !item.checked} : item)
     setItems(listItems)
-    localStorage.setItem("todolist", JSON.stringify(listItems))
   }
 
   const handleDelete = (id) => {
     const listItems = items.filter(item => item.id !== id)
     setItems(listItems)
-    localStorage.setItem("todolist", JSON.stringify(listItems))
-  }
-
-  const setAndSaveItems = (newItems) => {
-    setItems(newItems)
-    localStorage.setItem("todolist", JSON.stringify(newItems))
   }
 
   const addItem = (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     const myNewItem = {id, checked: false, item};
     const listItems = [...items, myNewItem];
-    setAndSaveItems(listItems)
+    setItems(listItems)
   }
 
   const handleSubmit = (e) => {
