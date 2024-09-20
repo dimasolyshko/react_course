@@ -1,0 +1,28 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "Откуда он появился?",
+      "datetime": "November 16, 2023 10:47:30 AM",
+      "body": "gfgdfgdfgfdgdfg"
+    },
+    {
+      "id": "2",
+      "title": "Откуда он появился? 2",
+      "datetime": "November 16, 2023 10:47:30 AM",
+      "body": "gfgdfgdfgfdg3232333232323323dfg"
+    },
+    {
+      "id": "3",
+      "title": "Откуда он появился? 3",
+      "datetime": "November 16, 2023 10:47:30 AM",
+      "body": "gfgdfgdfgfd32323233gdfg"
+    },
+    {
+      "id": "4",
+      "title": "Hello",
+      "datetime": "Sep 21, 2024 12:46:52 AM",
+      "body": "ааа"
+    }
+  ]
+}
