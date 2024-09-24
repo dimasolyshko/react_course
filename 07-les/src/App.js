@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Route, Router, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import {format} from "date-fns";
 import Home from "./Home";
 import Layout from "./Layout";
@@ -9,6 +9,7 @@ import PostPage from "./PostPage";
 import NewPost from "./NewPost";
 import api from "./api/posts"
 import EditPost from "./EditPost";
+import useFetchAxios from "./hooks/useFetchAxios";
 
 function App() {
 const [posts, setPosts] = useState([]);
@@ -20,25 +21,13 @@ const [postBody, setPostBody] = useState("")
 const [editTitle, setEditTitle] = useState("")
 const [editBody, setEditBody] = useState("")
 
-useEffect(() => {
-  const fetchPosts = async () => {
-    try {
-      const response = await api.get("/posts");
-      setPosts(response.data);
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-      } else { 
-        console.log(`Error ${error.message}`);
-      }
-    }
-  }
-  fetchPosts();
-}, [])
-
-
 const navigate = useNavigate()
+
+const {data, fetchError, isLoading} = useFetchAxios("http://localhost:3500/posts")
+
+useEffect(() => {
+  setPosts(data)
+}, [data])
 
 const handleDelete = async id => {
   try {
@@ -73,8 +62,7 @@ const handleEdit = async (id) => {
   const updatePost = {id, title: editTitle, datetime, body: editBody };
   try {
     const response = await api.put(`/posts/${id}`, updatePost)
-    const allPost = [...posts, response.data];
-    setPosts(posts.map( post => post.id === id ? {... response.data} : post))
+    setPosts(posts.map( post => post.id === id ? {...response.data} : post))
     setPostBody("")
     setPostTitle("")
     navigate("/")
@@ -100,7 +88,11 @@ useEffect(() => {
         search={search}
         setSearch={setSearch}
       />} >
-        <Route index element={<Home posts={searchResult}/>}/>
+        <Route index element={<Home 
+          posts={searchResult}
+          fetchError={fetchError}
+          isLoading={isLoading}
+        />}/>
         <Route path="post">
           <Route index element={<NewPost 
             postTitle={postTitle}
